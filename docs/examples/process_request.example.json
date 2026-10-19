@@ -1,0 +1,12 @@
+{
+  "document_id": "doc-1001",
+  "case_id": "case-42",
+  "s3_bucket": "client-case-documents",
+  "s3_key": "cases/42/insurance-letter.pdf",
+  "file_type": "pdf",
+  "callback_url": "https://nestjs.internal/internal/documents/doc-1001/processing-result",
+  "force_reprocess": false,
+  "metadata": {
+    "request_id": "abc-123"
+  }
+}

@@ -1,0 +1,13 @@
+# Hot-reload for development:
+#   docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build
+# (the Celery worker has no auto-reload: run `docker compose restart worker` after editing pipeline code)
+services:
+  api:
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+    volumes:
+      - ./app:/app/app
+      - ./data:/app/data
+  worker:
+    volumes:
+      - ./app:/app/app
+      - ./data:/app/data

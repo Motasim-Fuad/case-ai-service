@@ -1,0 +1,24 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "API (uvicorn --reload)",
+      "type": "debugpy", "request": "launch", "module": "uvicorn",
+      "args": ["app.main:app", "--reload", "--port", "8000"],
+      "envFile": "${workspaceFolder}/.env", "justMyCode": true
+    },
+    {
+      "name": "Celery worker (Windows: uses --pool=solo)",
+      "type": "debugpy", "request": "launch", "module": "celery",
+      "args": ["-A", "app.workers.celery_app:celery_app", "worker", "-Q", "case_ai", "-l", "INFO", "--pool=solo"],
+      "envFile": "${workspaceFolder}/.env", "justMyCode": true
+    },
+    {
+      "name": "Demo: sample PDF (in-memory, no Docker)",
+      "type": "debugpy", "request": "launch", "module": "scripts.demo_local",
+      "args": ["samples/sample_insurance_letter.pdf", "--ask", "When are the photographs due?"],
+      "envFile": "${workspaceFolder}/.env"
+    },
+    { "name": "Pytest: all", "type": "debugpy", "request": "launch", "module": "pytest", "args": ["-q"] }
+  ]
+}

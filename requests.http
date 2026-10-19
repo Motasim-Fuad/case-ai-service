@@ -1,0 +1,47 @@
+### Install the "REST Client" VS Code extension, then click "Send Request" above any request.
+@host = http://localhost:8000
+@key = dev-internal-key
+
+### Health (Redis + Qdrant)
+GET {{host}}/health
+
+### Process a document that is ALREADY in S3 (this is what NestJS calls)
+POST {{host}}/api/v1/documents/process
+X-Internal-Api-Key: {{key}}
+Content-Type: application/json
+
+{
+  "document_id": "doc-1001",
+  "case_id": "case-42",
+  "s3_bucket": "my-bucket",
+  "s3_key": "cases/42/insurance-letter.pdf",
+  "file_type": "pdf",
+  "callback_url": "http://api:8000/api/v1/dev/webhook-echo",
+  "metadata": { "request_id": "abc-123" }
+}
+
+### Poll a job (replace the id)
+GET {{host}}/api/v1/documents/jobs/PASTE_JOB_ID_HERE
+X-Internal-Api-Key: {{key}}
+
+### Ask a question about a case (RAG)
+POST {{host}}/api/v1/case/case-42/query
+X-Internal-Api-Key: {{key}}
+Content-Type: application/json
+
+{ "question": "What is the deadline to submit photographs?" }
+
+### Semantic search only (no LLM)
+POST {{host}}/api/v1/case/case-42/search
+X-Internal-Api-Key: {{key}}
+Content-Type: application/json
+
+{ "query": "repair estimate", "top_k": 5 }
+
+### Delete a document's vectors
+DELETE {{host}}/api/v1/documents/doc-1001/index
+X-Internal-Api-Key: {{key}}
+
+### See webhook payloads that the built-in echo receiver got (dev only)
+GET {{host}}/api/v1/dev/webhook-echo
+X-Internal-Api-Key: {{key}}
